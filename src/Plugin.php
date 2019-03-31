@@ -4,9 +4,9 @@ namespace Curator\ComposerSAPlugin;
 
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
-use Composer\Installer\InstallerEvent;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
+use Composer\Script\Event;
 
 class Plugin implements PluginInterface, EventSubscriberInterface {
 
@@ -26,7 +26,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
     );
   }
 
-  public function injectValidatingAutoloader(InstallerEvent $event) {
+  public function injectValidatingAutoloader(Event $event) {
     $this->io->write('Intercepted post-autoload-dump event');
   }
 }
