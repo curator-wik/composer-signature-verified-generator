@@ -1,0 +1,24 @@
+{
+    "name": "curator-wik/composer-signed-autoloading",
+    "description": "Composer plugin that makes the dumped autoloader verify non-opcached source files",
+    "type": "composer-plugin",
+    "require": {
+        "composer-plugin-api": "^1.0|^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Curator\\ComposerSAPlugin\\": "src/"
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mike Baynton",
+            "email": "mike@mbaynton.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "extra": {
+        "class": "Curator\\ComposerSAPlugin\\Plugin"
+    }
+}
