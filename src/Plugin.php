@@ -37,12 +37,12 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
     $class_loader_fh = fopen($class_loader_file, 'r+');
     $class_loader_base_code = fread($class_loader_fh, 4 * 1024);
     fseek($class_loader_fh, 0);
-    $class_loader_base_code = str_replace("\nclass ClassLoader\n", "\nclass ClassLoaderBase\n", $class_loader_base_code);
+    $class_loader_base_code = str_replace("\nclass ClassLoader\n", "\nclass LoaderBase \n", $class_loader_base_code);
     fwrite($class_loader_fh, $class_loader_base_code);
 
     fseek($class_loader_fh, 0, SEEK_END);
     $new_loader_code = <<<INJECTEDCODE
-class ClassLoader extends ClassLoaderBase
+class ClassLoader extends LoaderBase
 {
     /**
      * Loads the given class or interface.
