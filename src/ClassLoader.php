@@ -32,21 +32,23 @@ class ClassLoader extends LoaderBase {
   }
 
   /**
-   * @param $file
+   * @param string $file
+   * @param bool $retrying
+   *   True on recursive 2nd call if file was modified.
    *
    * @return bool
    */
   public function validateAndCache($file, $retrying = false) {
     global $baseDir;
 
-    $hash_file = dirname($file) . DIRECTORY_SEPARATOR . 'hashes.sha1';
+    $hash_file = dirname($file) . DIRECTORY_SEPARATOR . 'hashes.sha256';
     if (! is_file($hash_file) || ($hashes = file_get_contents($hash_file)) === false) {
       return false;
     }
 
     // Package providers could perhaps obtain signatures from several signers
     // and distribute a few .sig files, allowing usage by more users.
-    $signature_file = dirname($file) . DIRECTORY_SEPARATOR . 'hashes.sha2.sig.poc';
+    $signature_file = dirname($file) . DIRECTORY_SEPARATOR . 'hashes.sha256.sig.poc';
     if (! is_file($signature_file) || ($hash_signature = file_get_contents($signature_file)) === false) {
       return false;
     }
@@ -56,7 +58,7 @@ class ClassLoader extends LoaderBase {
     if (empty($baseDir)) {
       return false;
     }
-    $pubkey_file = $baseDir . DIRECTORY_SEPARATOR . 'pubkey';
+    $pubkey_file = $baseDir . DIRECTORY_SEPARATOR . 'pubkey.poc';
     if (! is_file($pubkey_file) || ($pubkey = file_get_contents($pubkey_file)) === false) {
       return false;
     }

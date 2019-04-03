@@ -5,11 +5,12 @@ namespace Curator\ComposerSAPlugin;
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
+use Composer\Plugin\Capable;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Util\Filesystem;
 
-class Plugin implements PluginInterface, EventSubscriberInterface {
+class Plugin implements PluginInterface, EventSubscriberInterface, Capable {
 
   /** @var Composer $composer */
   protected $composer;
@@ -24,6 +25,12 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
   public static function getSubscribedEvents() {
     return array(
       'post-autoload-dump' => 'injectValidatingAutoloader'
+    );
+  }
+
+  public function getCapabilities() {
+    return array(
+      'Composer\Plugin\Capability\CommandProvider' => 'Curator\ComposerSAPlugin\CommandProvider',
     );
   }
 
@@ -46,21 +53,5 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
     fseek($class_loader_fh, 0, SEEK_END);
     fwrite($class_loader_fh, $new_loader_code);
     fclose($class_loader_fh);
-  }
-
-  /**
-   * Copy file using stream_copy_to_stream to work around https://bugs.php.net/bug.php?id=6463
-   *
-   * @param string $source
-   * @param string $target
-   */
-  protected function safeCopy($source, $target)
-  {
-    $source = fopen($source, 'r');
-    $target = fopen($target, 'w+');
-
-    stream_copy_to_stream($source, $target);
-    fclose($source);
-    fclose($target);
   }
 }
