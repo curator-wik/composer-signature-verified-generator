@@ -40,38 +40,10 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
     $class_loader_base_code = str_replace("\nclass ClassLoader\n", "\nclass LoaderBase \n", $class_loader_base_code);
     fwrite($class_loader_fh, $class_loader_base_code);
 
+    $new_loader_code = file_get_contents(dirname(__FILE__) . '/ClassLoader.php');
+    $new_loader_code = substr($new_loader_code, strpos($new_loader_code, "\nclass ClassLoader extends LoaderBase"));
+
     fseek($class_loader_fh, 0, SEEK_END);
-    $new_loader_code = <<<INJECTEDCODE
-class ClassLoader extends LoaderBase
-{
-    /**
-     * Loads the given class or interface.
-     *
-     * @param  string    \$class The name of the class
-     * @return bool|null True if loaded, null otherwise
-     */
-    public function loadClass(\$class)
-    {
-        if (\$file = \$this->findFile(\$class)) {
-            includeFileSigned(\$file);
-
-            return true;
-        }
-    }
-}
-
-/**
- * Scope isolated include.
- *
- * Prevents access to \$this/self from included files.
- */
-function includeFileSigned(\$file)
-{
-    include \$file;
-}
-
-INJECTEDCODE;
-
     fwrite($class_loader_fh, $new_loader_code);
     fclose($class_loader_fh);
   }
