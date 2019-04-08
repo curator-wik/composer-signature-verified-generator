@@ -1,10 +1,10 @@
 # Code signing plugin for [signature-verified-autoloader](https://github.com/curator-wik/composer-signature-verified-autoloader)
 
-Include this package as a dev dependency in order to create hash and/or
-signature files to your project to be trusted by the [signature-verified-autoloader](https://github.com/curator-wik/composer-signature-verified-autoloader).
+Include this Composer plugin as a dev dependency in order to add hash and/or
+signature files to your project so it can be trusted by the [signature-verified-autoloader](https://github.com/curator-wik/composer-signature-verified-autoloader).
 
-It locates code that is includeable through the autoload rules in your `composer.json`
-and adds hash or signature files for them. ***PSR-0 is yet to be implemented*** and will throw
+The plugin provides a command to compute hash files and a command to compute signature files
+for each php file in your project that could be autoloaded. ***PSR-0 is yet to be implemented*** and will throw
 an exception instead for now if your project uses it.
 
 ## Usage: Developers
@@ -13,7 +13,7 @@ Before tagging a new release, simply run
 composer dump-hashes
 ```
 A `hashes.sha256` file will be created in each directory with at least one file that
-can be autoloaded. Include these files in your release. You may also want to obtain
+could be autoloaded. Include these files in your release. You may also want to obtain
 corresponding signature files from some signing authority and include those as well.
 
 ## Usage: Signing Authorities
@@ -39,5 +39,5 @@ passing
      of their filenames.
      
 On success, `hashes.sha256.sig.[signing authority code]` files will be computed
-and placed alongside each `hashes.sha256` file, and a message indicating the
+and placed alongside each `hashes.sha256` file. A message indicating the
 number of hash files signed is output.
