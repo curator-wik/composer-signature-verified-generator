@@ -1,6 +1,6 @@
 {
-    "name": "curator-wik/composer-signed-autoloading",
-    "description": "Composer plugin that makes the dumped autoloader verify non-opcached source files",
+    "name": "curator-wik/signature-verified-generator",
+    "description": "Composer plugin for developers and signing authorities to support signature-verified autoloading.",
     "type": "composer-plugin",
     "require": {
         "composer-plugin-api": "^1.0|^2.0",
@@ -20,6 +20,6 @@
     ],
     "minimum-stability": "dev",
     "extra": {
-        "class": "Curator\\ComposerSAPlugin\\Plugin"
+        "class": "Curator\\ComposerSAPlugin\\GeneratorPlugin"
     }
 }
